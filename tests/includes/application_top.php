@@ -18,4 +18,3 @@
 
 define('PROJECT_VERSION', 'commerce:SEO v2.2 CE');
 define('PROJECT_INT_VERSION', '2.2.0.3');
-?>
