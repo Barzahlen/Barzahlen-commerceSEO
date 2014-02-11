@@ -36,7 +36,7 @@ class barzahlen {
   function barzahlen() {
 
     $this->code = 'barzahlen';
-    $this->version = '1.0.1';
+    $this->version = '1.0.2';
     $this->title = MODULE_PAYMENT_BARZAHLEN_TEXT_TITLE;
     $this->description = '<div align="center">' . xtc_image('http://cdn.barzahlen.de/images/barzahlen_logo.png', MODULE_PAYMENT_BARZAHLEN_TEXT_TITLE) . '</div><br>' . MODULE_PAYMENT_BARZAHLEN_TEXT_DESCRIPTION;
     $this->sort_order = MODULE_PAYMENT_BARZAHLEN_SORT_ORDER;
@@ -97,7 +97,7 @@ class barzahlen {
 
       for($i = 1; $i <= 10; $i++) {
         $count = str_pad($i,2,"0",STR_PAD_LEFT);
-        $description .= '<img src="http://cdn.barzahlen.de/images/barzahlen_partner_'.$count.'.png" alt="" />';
+        $description .= '<img src="http://cdn.barzahlen.de/images/barzahlen_partner_'.$count.'.png" alt="" style="vertical-align: middle; height: 25px;" />';
       }
 
       return array('id' => $this->code, 'module' => $title, 'description' => $description);
@@ -172,10 +172,7 @@ class barzahlen {
     $last = xtc_db_fetch_array($query);
 
     if($xmlArray != null) {
-      $_SESSION['payment-slip-link']  = $xmlArray['payment-slip-link'];
       $_SESSION['infotext-1']  = $this->_convertISO($xmlArray['infotext-1']);
-      $_SESSION['infotext-2']  = $this->_convertISO($xmlArray['infotext-2']);
-      $_SESSION['expiration-notice']  = $this->_convertISO($xmlArray['expiration-notice']);
 
       // set transaction details
       xtc_db_query("UPDATE ". TABLE_ORDERS ."
@@ -189,8 +186,6 @@ class barzahlen {
                     SET orders_status_id = '".MODULE_PAYMENT_BARZAHLEN_NEW_STATUS."',
                         comments = '". MODULE_PAYMENT_BARZAHLEN_TEXT_X_ATTEMPT_SUCCESS ."'
                     WHERE orders_status_history_id = '".$last['orders_status_history_id']."'");
-
-      xtc_redirect(DIR_WS_CATALOG . FILENAME_CHECKOUT_PROCESS . '?' . session_name() . '=' . session_id());
     }
     else {
       // set order status
@@ -203,17 +198,38 @@ class barzahlen {
                     SET orders_status_id = '".MODULE_PAYMENT_BARZAHLEN_EXPIRED_STATUS."',
                         comments = '".$this->_convertISO(MODULE_PAYMENT_BARZAHLEN_TEXT_PAYMENT_ATTEMPT_FAILED)."'
                     WHERE orders_status_history_id = '".$last['orders_status_history_id']."'");
-
-      xtc_redirect(DIR_WS_CATALOG . FILENAME_CHECKOUT_PAYMENT . '?payment_error=barzahlen&' . session_name() . '=' . session_id());
     }
+
+    xtc_redirect(xtc_href_link(FILENAME_CHECKOUT_PROCESS, session_name() . '=' . session_id(), 'SSL'));
   }
 
   /**
-   * After process. Not used in this module.
+   * After process. Redirects user to payment selection if payment was not successful.
    *
    * @return false
    */
   function after_process() {
+    global $insert_id;
+
+    // check if payment was successful
+    $query = xtc_db_query("SELECT barzahlen_transaction_id FROM ". TABLE_ORDERS ."
+                           WHERE orders_id = '".$insert_id."'
+                           AND barzahlen_transaction_state = 'pending'  LIMIT 1");
+
+    // if not, redirect to payment method selection
+    if(xtc_db_num_rows($query) == 0) {
+      // check if ajax checkout is enabled
+      $query = xtc_db_query("SELECT configuration_id FROM ". TABLE_CONFIGURATION ."
+                             WHERE configuration_key = 'CHECKOUT_AJAX_STAT'
+                             AND configuration_value = 'true' LIMIT 1");
+
+      if(xtc_db_num_rows($query) == 1) {
+        xtc_redirect(xtc_href_link(FILENAME_CHECKOUT, 'payment_error=barzahlen', 'SSL'));
+      }
+      else {
+        xtc_redirect(xtc_href_link(FILENAME_CHECKOUT_PAYMENT, 'payment_error=barzahlen', 'SSL'));
+      }
+    }
     return false;
   }
 

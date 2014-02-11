@@ -88,7 +88,7 @@ class db_handler {
 }
 
 /**
- * gambio DB functions
+ * commerce:SEO DB functions
  */
 function xtc_db_query($query) {
   return mysql_query($query);
@@ -101,13 +101,16 @@ function xtc_db_fetch_array($query) {
 }
 
 /**
- * other gambio methods
+ * other commerce:SEO methods
  */
 function xtc_image($path) {
   return $path;
 }
 function xtc_redirect($path) {
   return $path;
+}
+function xtc_href_link($file, $settings, $ssl) {
+  return $file;
 }
 
 /**
