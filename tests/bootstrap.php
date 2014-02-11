@@ -82,7 +82,6 @@ class db_handler
         $delete = mysql_query("TRUNCATE TABLE " . TABLE_ORDERS);
         $delete = mysql_query("TRUNCATE TABLE " . TABLE_ORDERS_STATUS_HISTORY);
         $delete = mysql_query("TRUNCATE TABLE " . TABLE_ORDERS_TOTAL);
-        mysql_close();
 
         $fh = fopen( 'src/logfiles/barzahlen.log', 'w' );
         fclose($fh);
