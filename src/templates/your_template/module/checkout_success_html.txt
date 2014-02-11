@@ -25,4 +25,4 @@
 </div>
 <hr/><br/>
 {/if}
-<!--EOF - Barzahlen - 2012-11-12: Barzahlen Payment-Slip-Link-->
+<!--EOF - Barzahlen - 2012-09-01: Barzahlen Payment-Slip-Link-->

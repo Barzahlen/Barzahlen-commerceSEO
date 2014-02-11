@@ -1,6 +1,6 @@
 <?php
 /**
- * Barzahlen Payment Module (xt:Commerce 3)
+ * Barzahlen Payment Module (commerce:SEO)
  *
  * NOTICE OF LICENSE
  *

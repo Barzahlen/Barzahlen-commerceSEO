@@ -6,4 +6,4 @@ Barzahlen Payment Module (commerce:SEO)
 http://www.barzahlen.de
 
 ==Current Version==
-1.0.0
+1.0.1
