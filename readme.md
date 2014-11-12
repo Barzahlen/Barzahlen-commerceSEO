@@ -1,12 +1,19 @@
 # Barzahlen Payment Module (commerce:SEO)
 
 ## User Manual
-https://integration.barzahlen.de/de/shopsysteme/commerce-seo/nutzerhandbuch
+DE - https://integration.barzahlen.de/de/shopsysteme/commerce-seo/nutzerhandbuch  
+EN - https://integration.barzahlen.de/en/shopsystems/commerce-seo/user-manual
 
 ## Current Version
-1.0.8
+1.1.0
 
 ## Changelog
+
+### 1.1.0 (10.11.2014)
+* integrated Barzahlen PHP SDK v1.1.7 (Payment & Cancel)
+* automatic payment slip cancellation for cancelled orders
+* callback returns 200 (OK) only after successful database update
+* improved payment selection
 
 ### 1.0.8 (15.05.2014)
 * added missing tax amounts for b2b customers to total amount
@@ -44,7 +51,7 @@ https://integration.barzahlen.de/de/shopsysteme/commerce-seo/nutzerhandbuch
 * initial release
 
 ## Support
-The Barzahlen Team will happily assist you with any problems or questions. Send us an email to support@barzahlen.de or use the contact form at http://www.barzahlen.de/partner/integration.
+The Barzahlen Team will happily assist you with any problems or questions. Send us an email to support@barzahlen.de or use the contact form at https://integration.barzahlen.de/en/support.
 
 ## Copyright
 (c) 2014, Cash Payment Solutions GmbH  
